@@ -1,0 +1,11 @@
+image: gitpod/workspace-java-17
+
+tasks:
+  - init: mvn clean install   # Runs once when the workspace is created
+    command: mvn test         # Runs every time the workspace starts
+
+vscode:
+  extensions:
+    - vscjava.vscode-java-pack
+    - vscjava.vscode-java-test
+    - vscjava.vscode-maven
