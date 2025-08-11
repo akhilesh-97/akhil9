@@ -1,11 +1,19 @@
-image: gitpod/workspace-java-17
+image: gitpod/workspace-full
 
 tasks:
-  - init: mvn clean install   # Runs once when the workspace is created
-    command: mvn test         # Runs every time the workspace starts
+  - init: |
+      echo "Prebuild: compile project (skip tests)"
+      mvn -B -DskipTests=true clean package
+  - command: >
+      bash -lc 'if [ -z "$LT_USERNAME" ] || [ -z "$LT_ACCESS_KEY" ]; then
+                  echo "LT_USERNAME or LT_ACCESS_KEY not set.";
+                  echo "Export them (temporary) in terminal, or add as workspace secrets.";
+                  echo "Example (temporary): export LT_USERNAME=your_user && export LT_ACCESS_KEY=your_key";
+                  /bin/bash;
+                else
+                  echo "Running tests against LambdaTest...";
+                  mvn test;
+                fi'
 
 vscode:
-  extensions:
-    - vscjava.vscode-java-pack
-    - vscjava.vscode-java-test
-    - vscjava.vscode-maven
+  extensions: []
